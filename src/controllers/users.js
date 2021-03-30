@@ -1,12 +1,14 @@
-require('dotenv').config();
-const express = require('express')
-const app = express()
+const express = require('express');
 
-const port = process.env.PORT || 3000; 
 
-app.use(express.json()); //middleware preconfiguraciones en ete caso tipo
+//el profe lo puso en todos los metodos
+/*
+* @param {express.Request} req
+* @param {express.Request} req
+*/
 
-app.get('/users', function (req, res) 
+ //o function( req = Request, res)
+const getAllUsers = function (req, res) 
 {
     const users = 
     [
@@ -20,11 +22,10 @@ app.get('/users', function (req, res)
             name: 'Marta'
         },
     ]
-   res.json(users); //200 default entonces no lo pongo
-});
+   res.json(users); //200 default entonces no lo pongo <- status(200)
+};
 
-
-app.post('/users', function (req, res)
+const createUser = function (req, res)
 {  
     const user = req.body;
     user.id = 86546;
@@ -35,9 +36,9 @@ app.post('/users', function (req, res)
         user
     }
   res.status(201).json(result);
-});
+};
 
-app.put('/users/:id', function (req, res) 
+const updateUser = function (req, res) 
 {
     const {id} = req.params;
     const user = req.body;
@@ -50,9 +51,9 @@ app.put('/users/:id', function (req, res)
         user
     }
     res.status(200).json(result)
-});
+};
 
-app.patch('/users/:id', function (req, res) 
+const updatePartialUser = function (req, res) 
 {
     const {id} = req.params;
     const user = req.body;
@@ -65,9 +66,9 @@ app.patch('/users/:id', function (req, res)
     }
 
     res.status(200).json(result);
-});
+};
 
-app.delete('/users/:id', function (req, res)  //con los : indico que es dinamico
+const deleteUser = function (req, res)  //con los : indico que es dinamico
 {
 const {id} = req.params;
 //const id = req.params.id;
@@ -77,11 +78,13 @@ const {id} = req.params;
         message: `User with id: ${id} deleted`
     }
   res.json(result);
-});
+};
 
-////
-app.listen(port, ()=> 
-    {
-        console.log(`############### App started. PORT: ${port} ###############`);
-    }
-);
+module.exports = 
+{
+    getAllUsers,
+    createUser,
+    updateUser,
+    updatePartialUser,
+    deleteUser,
+}
